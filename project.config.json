@@ -1,0 +1,11 @@
+{
+	"miniprogramRoot": "miniprogram/",
+	"pluginRoot": "plugin/",
+	"compileType": "miniprogram",
+	"setting": {
+		"newFeature": true
+	},
+	"appid": "wxb8d98f8af067be3b",
+	"projectname": "hc-routine",
+	"condition": {}
+}

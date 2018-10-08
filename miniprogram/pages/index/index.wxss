@@ -1,0 +1,157 @@
+page {
+  color: #333;
+}
+.page-section{
+  margin-bottom: 20rpx;
+}
+.flex-wrp {display: flex;margin-top:20px;margin-left: 5px;margin-right: 5px}
+.bc_green {background: green;width:100px; height: 100px;}
+.bc_red {background: red;width:100px; height: 100px;}
+.bc_blue {background: blue;width:100px; height: 100px;}
+
+.text {FONT-SIZE: 18px;}
+.text_temp {FONT-SIZE: 56px; COLOR: rgb(46, 190, 53);}
+.text_red {FONT-SIZE: 30px; COLOR:rgb(46, 190, 53);}
+
+.devices_summary {
+  margin-top: 30px;
+  padding: 10px;
+  font-size: 16px;
+}
+.device_list {
+  height: 300px;
+  margin: 50px 5px;
+  margin-top: 0;
+  border: 1px solid #EEE;
+  border-radius: 5px;
+  width: auto;
+}
+.device_item {
+  border-bottom: 1px solid #EEE;
+  padding: 10px;
+  color: #666;
+}
+.device_item_hover {
+  background-color: rgba(0, 0, 0, .1);
+}
+.connected_info {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #F0F0F0;
+  padding: 10px;
+  padding-bottom: 20px;
+  margin-bottom: env(safe-area-inset-bottom);
+  font-size: 14px;
+  min-height: 100px;
+  box-shadow: 0px 0px 3px 0px;
+}
+.connected_info .operation {
+  position: absolute;
+  display: inline-block;
+  right: 30px;
+}
+view {
+  display: inline-block;
+}
+
+.container {
+  padding: 0;
+  margin: 0;
+  align-items: flex-start;
+}
+
+.section {
+  display: inline-block;
+  width: 100%;
+  position: relative;
+}
+
+.content {
+  margin: auto;
+  padding: auto;
+  position: absolute;
+  top: 5px;
+  left: 10px;
+}
+
+.switch {
+  position: relative;
+  float: right;
+  right: 0px;
+}
+
+button {
+  background: red\;
+}
+
+.list-item {
+  margin-top: 20rpx;
+  margin-bottom: 20rpx; 
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  border: 1px dashed #000;
+}
+
+.list-item text {
+   margin-top: 10rpx;
+}
+
+
+.list-item button {
+  margin-right: 10rpx;
+}
+
+.cir{ 
+ display: inline-block; 
+ margin-top: 20rpx;   
+} 
+  
+.top{ 
+ text-align: center
+} 
+  
+.cc{   
+ margin-top: -120px;   
+} 
+
+.text_top{   
+ margin-top: 20px;   
+ text-align: center;
+} 
+
+.progress_box{
+  position: relative;
+  width:110px;
+  height: 110px;  
+  display: flex;  
+  align-items: center;
+  justify-content: center;
+}
+.progress_bg{
+  position: absolute;
+    width:110px;
+  height: 110px; 
+}
+.progress_canvas{ 
+  width:110px;
+  height: 110px; 
+} 
+.progress_text{ 
+  position: absolute; 
+  display: flex;  
+  align-items: center;
+  justify-content: center
+}
+.progress_info{   
+  font-size: 36rpx;
+  padding-left: 16rpx;
+  letter-spacing: 2rpx
+} 
+.progress_dot{
+  width:16rpx;
+  height: 16rpx;  
+  border-radius: 50%;
+  background-color: #fb9126;
+}
