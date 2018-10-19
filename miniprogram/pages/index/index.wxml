@@ -2,16 +2,14 @@
   <view class="flex-wrp" style="flex-direction:row;">
     <view class="flex-item" style="width: 300px; ">
       <!-- <text>蓝牙初始化:</text> -->
+             <text >剩余时间：{{progress_L}}分{{progress_Z}}秒</text>
     </view>
     <view class="flex-item" style="width: 10px;">
     </view>
     <view class="flex-item" style="width: 150px;">
-      <!-- <switch checked="{{isChecked}}" bindchange="switchBlueTooth" /> -->
-      <!-- <text>未连接</text> -->
-      <button type="warn" size="mini" plain="true" loading='true' disabled="{{disabled}}" bindtap="switchBlueTooth"> 未连接 </button>
+      <button type="warn" size="mini" plain="true" loading="{{isLoading}}" disabled="{{isConnected}}" bindtap="flashBlueTooth"> {{isConnectedStr}} </button>
     </view>
   </view>
-
 
   <view class="flex-wrp" style="flex-direction:row;">
     <view class='progress_box'>
@@ -19,14 +17,14 @@
       <canvas class="progress_canvas" canvas-id="canvasProgress"> </canvas>
       <view class="progress_text">
         <view class="progress_dot"></view>
-        <text class='progress_info'> {{progress_txt}}</text>
+        <text class='progress_info'> {{progress_E}}%</text>
       </view>
     </view>
 
     <view class="flex-item" style="width: 100px;">
     </view>
     <view class="flex-item text_top" style="width: 100px;">
-          <text class="text_temp ">21</text>
+          <text class="text_temp ">{{progress_T}}</text>
           <text class="text_red ">℃</text>
     </view>
   </view>
@@ -38,10 +36,10 @@
 
   <view class="flex-wrp" style="flex-direction:row;">
     <view class="flex-item" style="width: 80px;">
-      <text>剩余时间：</text>
+      <text >剩余时间：</text>
     </view>
     <view class="flex-item" style="width: 200px;">
-      <slider value="{{duration}}" min="0" max="99" bindchange="changeProperty" data-property-name="duration" />
+      <slider value="{{progress_L}}" min="0" max="35" bindchange="changeProperty" data-property-name="duration" />
     </view>
   </view>
 </view>
@@ -60,7 +58,7 @@
         <text>前额亮度:</text>
       </view>
       <view class="flex-item " style="width: 220px;">
-        <slider value="{{duration}}" min="0" max="99" bindchange="changeProperty" data-property-name="duration" />
+        <slider value="{{progress_F}}" min="0" max="99" bindchange="changeProperty" data-property-name="duration" />
       </view>
     </view>
 
@@ -69,7 +67,7 @@
         <text>顶部亮度:</text>
       </view>
       <view class="flex-item " style="width: 220px;">
-        <slider value="{{duration}}" min="0" max="99" bindchange="changeProperty" data-property-name="duration" />
+        <slider value="{{progress_M}}" min="0" max="99" bindchange="changeProperty" data-property-name="duration" />
       </view>
     </view>
 
@@ -78,7 +76,7 @@
         <text>后枕亮度:</text>
       </view>
       <view class="flex-item " style="width: 220px;">
-        <slider value="{{duration}}" min="0" max="99" bindchange="changeProperty" data-property-name="duration" />
+        <slider value="{{progress_B}}" min="0" max="99" bindchange="changeProperty" data-property-name="duration" />
       </view>
     </view>
   </view>

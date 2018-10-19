@@ -2,5 +2,16 @@
   "pages": [
     "pages/index/index",
     "pages/index/blue"
-  ]
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "black"
+  },
+  "data": {
+    "blueName": "BT05",
+    "flag": false,
+    "serviceId": ""
+  }
 }

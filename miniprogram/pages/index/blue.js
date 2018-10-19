@@ -1,5 +1,5 @@
 const app = getApp()
-const deviceNameHC ="HC-05";
+
 function inArray(arr, key, val) {
   for (let i = 0; i < arr.length; i++) {
     if (arr[i][key] === val) {
@@ -21,11 +21,6 @@ function ab2hex(buffer) {
 }
 
 Page({
-  onLoad: function (options) {
-    this.setData({
-      title: options.title
-    })
-  },
   data: {
     devices: [],
     connected: false,
@@ -46,16 +41,6 @@ Page({
             }
           })
         }
-        wx.showModal({
-          title: '提示',
-          content: '请检查手机蓝牙是否打开',
-          success: function (res) {
-            that.setData({
-              isbluetoothready: false,
-              searchingstatus: false
-            })
-          }
-        })
       }
     })
   },
@@ -90,18 +75,8 @@ Page({
   onBluetoothDeviceFound() {
     wx.onBluetoothDeviceFound((res) => {
       res.devices.forEach(device => {
-        wx.showToast({
-          title: device.name,
-          icon: 'success',
-          duration: 5000
-        })
         if (!device.name && !device.localName) {
           return
-        }
-        console.log(device.name);
-        if (this.deviceNameHC == device.name) {
-          console.log(device.name);
-          createBLEConnection(device);
         }
         const foundDevices = this.data.devices
         const idx = inArray(foundDevices, 'deviceId', device.deviceId)
@@ -114,39 +89,6 @@ Page({
         this.setData(data)
       })
     })
-  },
-
-  startConnectDevices: function (ltype, array) {
-    var that = this;
-    clearTimeout(that.getConnectedTimer);
-    that.getConnectedTimer = null;
-    clearTimeout(that.discoveryDevicesTimer);
-    that.stopBluetoothDevicesDiscovery();
-    this.isConnectting = true;
-    wx.createBLEConnection({
-      deviceId: that.deviceId,
-      success: function (res) {
-        if (res.errCode == 0) {
-          setTimeout(function () {
-            that.getService(that.deviceId);
-          }, 5000)
-        }
-      },
-      fail: function (err) {
-        console.log('连接失败：', err);
-        if (ltype == 'loop') {
-          that.connectDeviceIndex += 1;
-          that.loopConnect(array);
-        } else {
-          that.startBluetoothDevicesDiscovery();
-          that.getConnectedBluetoothDevices();
-        }
-      },
-      complete: function () {
-        console.log('complete connect devices');
-        this.isConnectting = false;
-      }
-    });
   },
   createBLEConnection(e) {
     const ds = e.currentTarget.dataset
@@ -241,6 +183,10 @@ Page({
           value: ab2hex(characteristic.value)
         }
       }
+      // data[`chs[${this.data.chs.length}]`] = {
+      //   uuid: characteristic.characteristicId,
+      //   value: ab2hex(characteristic.value)
+      // }
       this.setData(data)
     })
   },
