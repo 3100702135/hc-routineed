@@ -3,14 +3,15 @@ page {
 }
 .page-section{
   margin-bottom: 20rpx;
+  margin-top:20px;
 }
 .flex-wrp {display: flex;margin-top:20px;margin-left: 5px;margin-right: 5px}
 .bc_green {background: green;width:100px; height: 100px;}
 .bc_red {background: red;width:100px; height: 100px;}
 .bc_blue {background: blue;width:100px; height: 100px;}
 
-.text {FONT-SIZE: 18px;}
-.text_temp {FONT-SIZE: 56px; COLOR: rgb(46, 190, 53);}
+.text {FONT-SIZE: 16px;font-family:Microsoft Yahei;}
+.text_temp {FONT-SIZE: 48px; COLOR: rgb(24, 219, 122);}
 .text_red {FONT-SIZE: 30px; COLOR:rgb(46, 190, 53);}
 
 .devices_summary {

@@ -1,8 +1,8 @@
-<view class="section">
+<view class="section class='text'">
   <view class="flex-wrp" style="flex-direction:row;">
     <view class="flex-item" style="width: 300px; ">
       <!-- <text>蓝牙初始化:</text> -->
-             <text >剩余时间：{{progress_L}}分{{progress_Z}}秒</text>
+             <text >距离治疗结束还有{{progress_L}}分钟</text>
     </view>
     <view class="flex-item" style="width: 10px;">
     </view>
@@ -12,53 +12,44 @@
   </view>
 
   <view class="flex-wrp" style="flex-direction:row;">
-    <view class='progress_box'>
-      <canvas class="progress_bg" canvas-id="canvasProgressbg"> </canvas>
-      <canvas class="progress_canvas" canvas-id="canvasProgress"> </canvas>
-      <view class="progress_text">
-        <view class="progress_dot"></view>
-        <text class='progress_info'> {{progress_E}}%</text>
-      </view>
+    <view class='flex-item text_top' style="width: 400px;">
+        <progress percent="{{progress_E}}" stroke-width="60" color="activeColor" show-info />
     </view>
 
-    <view class="flex-item" style="width: 100px;">
+    <view class="flex-item" style="width: 50px;">
     </view>
-    <view class="flex-item text_top" style="width: 100px;">
+    <view class="flex-item text_top" style="width: 200px;">
           <text class="text_temp ">{{progress_T}}</text>
           <text class="text_red ">℃</text>
     </view>
   </view>
 
-  <view class="section">
-    <view class="flex-wrp" style="height: 10px;flex-direction:column;">
-    </view>
-  </view>
 
-  <view class="flex-wrp" style="flex-direction:row;">
+  <view class="flex-wrp text_top" style="flex-direction:row;">
     <view class="flex-item" style="width: 80px;">
       <text >剩余时间：</text>
     </view>
-    <view class="flex-item" style="width: 200px;">
-      <slider value="{{progress_L}}" min="0" max="35" bindchange="changeProperty" data-property-name="duration" />
+    <view class="flex-item" style="width: 220px;">
+      <slider value="{{progress_L}}" min="0" max="35" bindchange="setProgress_L" data-property-name="duration" />
     </view>
   </view>
 </view>
 
-<view class="section">
+<view class="section text">
   <view class="flex-wrp" style="flex-direction:column;">
     <progress percent="100" stroke-width="2" color="activeColor" />
   </view>
 </view>
 
-<view class="section">
+<view class="section text">
   <view class="section__title"></view>
   <view class="flex-wrp" style="height: 200px;flex-direction:column;">
     <view class="flex-wrp" style="flex-direction:row;">
       <view class="flex-item ">
-        <text>前额亮度:</text>
+        <text>后枕亮度:</text>
       </view>
       <view class="flex-item " style="width: 220px;">
-        <slider value="{{progress_F}}" min="0" max="99" bindchange="changeProperty" data-property-name="duration" />
+        <slider value="{{progress_F}}" min="0" max="99" bindchange="setProgress_F" data-property-name="duration" />
       </view>
     </view>
 
@@ -67,16 +58,16 @@
         <text>顶部亮度:</text>
       </view>
       <view class="flex-item " style="width: 220px;">
-        <slider value="{{progress_M}}" min="0" max="99" bindchange="changeProperty" data-property-name="duration" />
+        <slider value="{{progress_M}}" min="0" max="99" bindchange="setProgress_M" data-property-name="duration" />
       </view>
     </view>
 
     <view class="flex-wrp" style="flex-direction:row;">
       <view class="flex-item ">
-        <text>后枕亮度:</text>
+        <text>前额亮度:</text>
       </view>
       <view class="flex-item " style="width: 220px;">
-        <slider value="{{progress_B}}" min="0" max="99" bindchange="changeProperty" data-property-name="duration" />
+        <slider value="{{progress_B}}" min="0" max="99" bindchange="setProgress_B" data-property-name="duration" />
       </view>
     </view>
   </view>

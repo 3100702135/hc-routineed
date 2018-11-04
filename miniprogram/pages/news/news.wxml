@@ -1,0 +1,13 @@
+<view class="schoollist">
+  <block wx:for="{{items}}" wx:key="item">
+    <view class="school-list">
+      <navigator url="{{item.outUrl}}">
+        <view class="school-list-info" index="{{index}}">
+          <web-view src="https://v.qq.com/x/page/f0722b4h2a6.html"></web-view>
+          <image class="school-list-photo" src="{{item.imageUrl}}"/>
+          <text class="school-list-desc">{{item.content}}</text>
+        </view>
+      </navigator>
+    </view>
+  </block>
+</view>

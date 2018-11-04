@@ -1,30 +1,28 @@
 App({
-
-  /**
-   * 当小程序初始化完成时，会触发 onLaunch（全局只触发一次）
-   */
+  globalData: {
+      model: null,
+      version : null,
+      system: null,
+      platform: null,
+      SDKVersion: null
+  },
   onLaunch: function () {
-    
+    var that = this;
+    that.globalData.sysinfo = wx.getSystemInfoSync()
   },
-
-  /**
-   * 当小程序启动，或从后台进入前台显示，会触发 onShow
-   */
-  onShow: function (options) {
-    
+  getModel: function () { //获取手机型号
+    return this.globalData.sysinfo["model"]
   },
-
-  /**
-   * 当小程序从前台进入后台，会触发 onHide
-   */
-  onHide: function () {
-    
+  getVersion: function () { //获取微信版本号
+    return this.globalData.sysinfo["version"]
   },
-
-  /**
-   * 当小程序发生脚本错误，或者 api 调用失败时，会触发 onError 并带上错误信息
-   */
-  onError: function (msg) {
-    
+  getSystem: function () { //获取操作系统版本
+    return this.globalData.sysinfo["system"]
+  },
+  getPlatform: function () { //获取客户端平台
+    return this.globalData.sysinfo["platform"]
+  },
+  getSDKVersion: function () { //获取客户端基础库版本
+    return this.globalData.sysinfo["SDKVersion"]
   }
 })

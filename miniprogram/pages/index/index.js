@@ -1,20 +1,27 @@
 const app = getApp()
 Page({
   data: {
-    progress_E: '20%',
+    progress_E: '88',
     progress_T: '26',
     progress_L: '19',
     progress_Z: '59',
-    progress_E: '50',
-    progress_E: '50',
-    progress_E: '50',
+    progress_F: '50',
+    progress_M: '50',
+    progress_B: '50',
+
+    setProgressValue_L: '',
+    setProgressValue_F: '',
+    setProgressValue_M: '',
+    setProgressValue_B: '',
 
     count: 0, // 设置 计数器 初始为0
     countTimer: null, // 设置 定时器 初始为nul
     isChecked: false,
+    isShow: false, //是否第一次，隐藏连接成功
     isLoading: true,  //蓝牙是否连接
     isConnected: false,  //蓝牙是否连接  已连接不能刷新
     isConnectedStr: '未连接',  //蓝牙是否连接
+    getConnectedTimer : 20000,  //蓝牙连接时间
     blueName : 'BT05',
     flag : false,
     serviceId : '',
@@ -26,20 +33,30 @@ Page({
     characteristic_indicate: false, //蓝牙设备特是否支持indicate 操作
 
   },
-  openBluetooth() {
-    console.log("打开蓝牙按钮");
-  },
-
   flashBlueTooth() {
-    setTimeout(function () {
-      wx.hideToast()
-    }, 2000)
     wx.showLoading({
       title: '请稍后...'
     });
-    // this.startConnect();
+    setTimeout(function () {
+      wx.hideToast()
+    }, 2000)
   },
   onLoad: function (options) {
+    //加载判断微信版本是否兼容
+    if (app.getPlatform() == 'android' && this.versionCompare('6.5.7', app.getVersion())) {
+      wx.showModal({
+        title: '提示',
+        content: '当前微信版本过低，请更新至最新版本',
+        showCancel: false
+      })
+    }
+    else if (app.getPlatform() == 'ios' && this.versionCompare('6.5.6', app.getVersion())) {
+      wx.showModal({
+        title: '提示',
+        content: '当前微信版本过低，请更新至最新版本',
+        showCancel: false
+      })
+    }
     // 页面初始化 options为页面跳转所带来的参数 
     this.startConnect();
   },
@@ -49,23 +66,22 @@ Page({
     wx.showLoading({
       title: '开启蓝牙适配'
     });
+    // setTimeout(function () {
+    //   wx.hideToast()
+    // }, 2000)
     wx.openBluetoothAdapter({
       success: function (res) {
         console.log("初始化蓝牙适配器");
         console.log(res);
-        that.getConnectedBluetoothDevices();
         that.getBluetoothAdapterState();
       },
       fail: function (err) {
         console.log(err);
         wx.showToast({
-          title: '蓝牙初始化失败',
+          title: '打开蓝牙失败',
           icon: 'success',
-          duration: 2000
+          duration: 5000
         })
-        setTimeout(function () {
-          wx.hideToast()
-        }, 2000)
       }
     });
     wx.onBluetoothAdapterStateChange(function (res) {
@@ -77,11 +93,14 @@ Page({
           wx.showToast({
             title: '蓝牙已关闭',
             icon: 'success',
-            duration: 2000
+            duration: 4000
           })
-          setTimeout(function () {
-            wx.hideToast()
-          }, 2000)
+          wx.hideToast();
+        that.setData({
+          isLoading: true,  //是否显示正在加载
+          isConnected: false, //刷新蓝牙变成已连接状态
+          isConnectedStr: '未连接'  //刷新蓝牙变成已连接
+        })
       }
       
     })
@@ -99,13 +118,10 @@ Page({
             icon: 'success',
             duration: 2000
           })
-          setTimeout(function () {
-            wx.hideToast()
-          }, 2000)
+          wx.hideToast();
         } else {
           if (!discovering) {
             that.startBluetoothDevicesDiscovery();
-            that.getConnectedBluetoothDevices();
           }
         }
       }
@@ -121,6 +137,7 @@ Page({
       services: [],
       allowDuplicatesKey: false,
       success: function (res) {
+        console.log('开启蓝牙搜索成功！');
         if (!res.isDiscovering) {
           that.getBluetoothAdapterState();
         } else {
@@ -128,52 +145,15 @@ Page({
         }
       },
       fail: function (err) {
+        console.log('开启蓝牙搜索失败！');
         wx.showToast({
           title: '蓝牙搜索失败'
         })
         setTimeout(function () {
           wx.hideToast()
         }, 2000)
+        that.startBluetoothDevicesDiscovery();
         console.log(err);
-      }
-    });
-  },
-
-  getConnectedBluetoothDevices: function () {
-    var that = this;
-    console.log('getConnectedBluetoothDevices.serviceId', that.serviceId);
-    wx.getConnectedBluetoothDevices({
-      services: [that.serviceId],
-      success: function (res) {
-        console.log("获取处于连接状态的设备", res);
-        var devices = res['devices'], flag = false, index = 0, conDevList = [];
-        devices.forEach(function (value, index, array) {
-          if (value['name'].indexOf('BT-05') != -1) {
-            // 如果存在包含BT05字段的设备
-            flag = true;
-            index += 1;
-            conDevList.push(value['deviceId']);
-            that.deviceId = value['deviceId'];
-            return;
-          }
-        });
-        if (flag) {
-          this.connectDeviceIndex = 0;
-          that.loopConnect(conDevList);
-        } else {
-          if (!this.getConnectedTimer) {
-            that.getConnectedTimer = setTimeout(function () {
-              that.getConnectedBluetoothDevices();
-            }, 5000);
-          }
-        }
-      },
-      fail: function (err) {
-        if (!this.getConnectedTimer) {
-          that.getConnectedTimer = setTimeout(function () {
-            that.getConnectedBluetoothDevices();
-          }, 5000);
-        }
       }
     });
   },
@@ -213,29 +193,22 @@ Page({
   startConnectDevices: function (ltype, array) {
     var that = this;
     console.log('开始连接蓝牙服务startConnectDevices');
-    clearTimeout(that.getConnectedTimer);
-    that.getConnectedTimer = null;
-    clearTimeout(that.discoveryDevicesTimer);
     that.stopBluetoothDevicesDiscovery();
     console.log('停止扫描stopBluetoothDevicesDiscovery');
     wx.createBLEConnection({
       deviceId: that.deviceId,
       success: function (res) {
         console.log('连接蓝牙成功');
-        wx.showToast({
-          title: '设备连接成功'
-        })
-        setTimeout(function () {
-          wx.hideToast()
-        }, 5000)
         that.setData({
+          isShow:true,
           isLoading: false, //是否显示正在加载
           isConnected: true, //刷新蓝牙变成已连接状态
           isConnectedStr: '已连接' //刷新蓝牙变成已连接
         })
-        setTimeout(function () {
-          wx.hideToast()
-        }, 2000)
+        wx.showLoading({
+          title: '已连接,请稍等...',
+          duration: 8000
+        })
         if (res.errCode == 0) {
           setTimeout(function () {
             that.getService(that.deviceId);
@@ -245,13 +218,7 @@ Page({
       },
       fail: function (err) {
         console.log('连接蓝牙失败：', err);
-        if (ltype == 'loop') {
-          that.connectDeviceIndex += 1;
-          that.loopConnect(array);
-        } else {
-          that.startBluetoothDevicesDiscovery();
-          that.getConnectedBluetoothDevices();
-        }
+        that.startConnect();
       },
       complete: function () {
         console.log('complete connect devices');
@@ -274,6 +241,22 @@ Page({
     console.log('开启蓝牙监听onBLEConnectionStateChange');
     wx.onBLEConnectionStateChange(function (res) {
       console.log(res);
+      if (!res.connected) {
+        console.log('回调状态！！！蓝牙状态异常');
+        wx.showToast({
+          title: '异常请重新打开！'
+        })
+        that.setData({
+          isLoading: true,  //是否显示正在加载
+          isConnected: false, //刷新蓝牙变成已连接状态
+          isConnectedStr: '未连接'  //刷新蓝牙变成已连接
+        })
+        wx.closeBLEConnection({
+          success: function (res) {
+            console.log(res)
+          }
+        })
+      }
     });
     // 获取蓝牙设备service值
     wx.getBLEDeviceServices({
@@ -346,15 +329,30 @@ Page({
   },
 
   /**
- * 发送 数据到设备中
- */
+* 读取 设备的数据
+*/
+  readFromBLE: function () {
+    var that = this;
+    wx.readBLECharacteristicValue({
+      // 这里的 deviceId 需要在上面的 getBluetoothDevices 或 onBluetoothDeviceFound 接口中获取
+      deviceId: that.deviceId,
+      // 这里的 serviceId 需要在上面的 getBLEDeviceServices 接口中获取
+      serviceId: that.serviceId,
+      // 这里的 characteristicId 需要在上面的 getBLEDeviceCharacteristics 接口中获取
+      characteristicId: that.characteristicId,
+      success: function (res) {
+        console.log('准备读取蓝牙设备信息readBLECharacteristicValue:', res.errMsg);
+      }
+    })
+  },
+
+  /**
+* 发送 数据到设备中
+*/
   writeToBLE: function (str) {
     var that = this;
-    var writeArray = new Int8Array(str.length)
-    for (var i = 0; i < str.length; i++) {
-      writeArray[i] = str.charCodeAt(i)
-    }
-    var writeBuffer = writeArray.buffer
+    var writeBuffer = that.stringToBytes(str +'  ');
+    console.log(str)
     console.log(writeBuffer)
     wx.writeBLECharacteristicValue({
       deviceId: that.deviceId,
@@ -375,27 +373,6 @@ Page({
         // complete
       }
     })
-
-
-  },
-
-  /**
-* 读取 设备的数据
-*/
-  readFromBLE: function () {
-    var that = this;
-    wx.readBLECharacteristicValue({
-      // 这里的 deviceId 需要在上面的 getBluetoothDevices 或 onBluetoothDeviceFound 接口中获取
-      deviceId: that.deviceId,
-      // 这里的 serviceId 需要在上面的 getBLEDeviceServices 接口中获取
-      serviceId: that.serviceId,
-      // 这里的 characteristicId 需要在上面的 getBLEDeviceCharacteristics 接口中获取
-      characteristicId: that.characteristicId,
-      success: function (res) {
-        console.log('准备读取蓝牙设备信息readBLECharacteristicValue:', res.errMsg);
-      }
-    })
-
   },
 
   // ArrayBuffer转16进度字符串示例
@@ -415,15 +392,17 @@ Page({
 
   // 字符串转byte
   stringToBytes: function (str) {
-    var array = new Int8Array(str.length)
+    var array = new Int8Array(32)
     for(var i = 0; i<str.length; i++) {
-    array[i] = str.charCodeAt(i)
+    array[i] = str.charCodeAt(i);
     }
     return array.buffer
   },
 
   // 接受数据显示
   readToShow: function (str) {
+    console.log('strFlag', str);
+
     var that = this;
     var strFlag = '';
     var strValue = '';
@@ -435,32 +414,65 @@ Page({
     strValue = str.substr(1, 2);
     console.log('strFlag', strFlag);
     console.log('strValue', strValue);
-    that.progress_E ='88';
     switch (strFlag)
     {
       
-      case 'E': this.setData({ progress_E: strValue}); break; //电量
-      case 'T': this.setData({ progress_T: strValue }); break; // 温度
-      case 'L': this.setData({ progress_L: strValue }); break;  //分钟
-      case 'Z': this.setData({ progress_Z: strValue }); break;  //秒
+      case 'E': this.setData({ progress_E: strValue });    break; //电量
+      case 'T': this.setData({ progress_T: strValue });   break; // 温度
+      case 'L': this.setData({ progress_L: strValue });   break;  //分钟
+      case 'Z': this.setData({ progress_Z: strValue });   break;  //秒
 
-      case 'F': this.setData({ progress_F: strValue }); break;  //前部亮度
-      case 'M': this.setData({ progress_M: strValue }); break;  //顶部亮度
-      case 'B': this.setData({ progress_B: strValue }); break;  //后部亮度
-      default : break;
+      case 'F': this.setData({ progress_F: strValue });   break;  //前部亮度
+      case 'M': this.setData({ progress_M: strValue });   break;  //顶部亮度
+      case 'B': this.setData({ progress_B: strValue });   break;  //后部亮度
+      default : this.onShow(); break;
     }
   },
 
-  loopConnect: function (devicesId) {
+  setProgress_L: function (e) {
     var that = this;
-    var listLen = devicesId.length;
-    if (devicesId[this.connectDeviceIndex]) {
-      this.deviceId = devicesId[this.connectDeviceIndex];
-      this.startConnectDevices('loop', devicesId);
-    } else {
-      console.log('已配对的设备小程序蓝牙连接失败');
-      that.startBluetoothDevicesDiscovery();
-      that.getConnectedBluetoothDevices();
+    that.setProgressValue_L = e.detail.value;
+    if (that.setProgressValue_L<10)
+    {
+      that.setProgressValue_L = '0' + that.setProgressValue_L;
+    }
+    that.writeToBLE('L' + that.setProgressValue_L.toString());
+    console.log('设置时间啦', 'L' + that.setProgressValue_L.toString());
+  },
+  setProgress_F: function (e) {
+    var that = this;
+    that.setProgressValue_F = e.detail.value;
+    that.writeToBLE('F' + that.setProgressValue_F.toString());
+    console.log('设置前额亮度', 'F' + that.setProgressValue_F.toString());  
+  },
+  setProgress_M: function (e) {
+    var that = this;
+    that.setProgressValue_M = e.detail.value;
+    that.writeToBLE('M' + that.setProgressValue_M.toString());
+    console.log('设置头顶亮度', 'M' + that.setProgressValue_M.toString());  
+  },
+  setProgress_B: function (e) {
+    var that = this;
+    that.setProgressValue_B = e.detail.value;
+    that.writeToBLE('B' + that.setProgressValue_B.toString());
+    console.log('设置后枕亮度', 'B' + that.setProgressValue_B.toString());  
+  },
+
+  //版本比较
+  versionCompare: function (ver1, ver2) { 
+    var version1pre = parseFloat(ver1)
+    var version2pre = parseFloat(ver2)
+    var version1next = parseInt(ver1.replace(version1pre + ".", ""))
+    var version2next = parseInt(ver2.replace(version2pre + ".", ""))
+    if (version1pre > version2pre)
+      return true
+    else if (version1pre < version2pre)
+      return false
+    else {
+      if (version1next > version2next)
+        return true
+      else
+        return false
     }
   },
 
@@ -477,64 +489,6 @@ Page({
     // 页面关闭 
   },
 
-  drawProgressbg: function () {
-    // 使用 wx.createContext 获取绘图上下文 context
-    var ctx = wx.createCanvasContext('canvasProgressbg')
-    ctx.setLineWidth(4);// 设置圆环的宽度
-    ctx.setStrokeStyle('#20183b'); // 设置圆环的颜色
-    ctx.setLineCap('round') // 设置圆环端点的形状
-    ctx.beginPath();//开始一个新的路径
-    ctx.arc(55, 55, 50, 0, 2 * Math.PI, false);
-    //设置一个原点(100,100)，半径为90的圆的路径到当前路径
-    ctx.stroke();//对当前路径进行描边
-    ctx.draw();
-  },
-  drawCircle: function (step) {
-    var context = wx.createCanvasContext('canvasProgress');
-    // 设置渐变
-    var gradient = context.createLinearGradient(100, 50, 50, 100);
-    gradient.addColorStop("0", "#2661DD");
-    gradient.addColorStop("0.5", "#40ED94");
-    gradient.addColorStop("1.0", "#5956CC");
-
-    context.setLineWidth(10);
-    context.setStrokeStyle(gradient);
-    context.setLineCap('round')
-    context.beginPath();
-    // 参数step 为绘制的圆环周长，从0到2为一周 。 -Math.PI / 2 将起始角设在12点钟位置 ，结束角 通过改变 step 的值确定
-    context.arc(55, 55, 50, -Math.PI / 2, step * Math.PI - Math.PI / 2, false);
-    context.stroke();
-    context.draw()
-  },
-  onReady: function () {
-    this.drawProgressbg();
-
-    this.drawCircle(2);
-  },
 
 
 })
-
-
-
-const deviceNameHC ="HC-05";
-function inArray(arr, key, val) {
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i][key] === val) {
-      return i;
-    }
-  }
-  return -1;
-}
-
-// ArrayBuffer转16进度字符串示例
-function ab2hex(buffer) {
-  var hexArr = Array.prototype.map.call(
-    new Uint8Array(buffer),
-    function (bit) {
-      return ('00' + bit.toString(16)).slice(-2)
-    }
-  )
-  return hexArr.join('');
-}
-

@@ -1,17 +1,49 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/index/blue"
+    "pages/use/use",
+    "pages/user/user",
+    "pages/news/news"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarTitleText": "黑可得激光生发头盔",
     "navigationBarTextStyle": "black"
   },
   "data": {
     "blueName": "BT05",
     "flag": false,
     "serviceId": ""
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "pages/images/x_home.png",
+        "selectedIconPath": "pages/images/2x_home.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/news/news",
+        "iconPath": "pages/images/x_news.png",
+        "selectedIconPath": "pages/images/2x_news.png",
+        "text": "资讯"
+      },
+      {
+        "pagePath": "pages/use/use",
+        "iconPath": "pages/images/x_book-holder.png",
+        "selectedIconPath": "pages/images/2x_book-holder.png",
+        "text": "使用说明"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "iconPath": "pages/images/x_settings-user.png",
+        "selectedIconPath": "pages/images/2x_settings-user.png",
+        "text": "个人中心"
+      }
+    ],
+    "color": "#8B4513",
+    "selectedColor": "#FF6347"
   }
 }
