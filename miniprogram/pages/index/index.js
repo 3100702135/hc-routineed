@@ -17,6 +17,7 @@ Page({
     count: 0, // 设置 计数器 初始为0
     countTimer: null, // 设置 定时器 初始为nul
     isChecked: false,
+    voiceChecked: true,
     isShow: false, //是否第一次，隐藏连接成功
     isLoading: true,  //蓝牙是否连接
     isConnected: false,  //蓝牙是否连接  已连接不能刷新
@@ -402,7 +403,6 @@ Page({
   // 接受数据显示
   readToShow: function (str) {
     console.log('strFlag', str);
-
     var that = this;
     var strFlag = '';
     var strValue = '';
@@ -425,6 +425,15 @@ Page({
       case 'F': this.setData({ progress_F: strValue });   break;  //前部亮度
       case 'M': this.setData({ progress_M: strValue });   break;  //顶部亮度
       case 'B': this.setData({ progress_B: strValue });   break;  //后部亮度
+
+      case 'V': 
+      if (strValue==11)
+      {
+        this.setData({ voiceChecked: true }); break;  //打开声音
+      }
+      else{
+        this.setData({ voiceChecked: flase }); break;  //关闭声音
+      }
       default : this.onShow(); break;
     }
   },
@@ -473,6 +482,20 @@ Page({
         return true
       else
         return false
+    }
+  },
+
+  checkboxChange: function (e) {
+    var that = this;
+    that.voiceChecked = e.detail.value;
+    if (that.voiceChecked == true) {
+      that.writeToBLE('V11' );
+      console.log('打开声音V11');
+    }
+    else
+    {
+      that.writeToBLE('V10');
+      console.log('关闭声音V10');
     }
   },
 

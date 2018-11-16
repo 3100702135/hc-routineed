@@ -1,12 +1,9 @@
 <view class="section class='text'">
   <view class="flex-wrp" style="flex-direction:row;">
-    <view class="flex-item" style="width: 300px; ">
-      <!-- <text>蓝牙初始化:</text> -->
-             <text >距离治疗结束还有{{progress_L}}分钟</text>
+    <view class="body-view" style="width: 250px;">
+      <checkbox checked="{{voiceChecked}}" bindchange="checkboxChange"/>声音
     </view>
-    <view class="flex-item" style="width: 10px;">
-    </view>
-    <view class="flex-item" style="width: 150px;">
+    <view class="flex-item" style="width: 120px;">
       <button type="warn" size="mini" plain="true" loading="{{isLoading}}" disabled="{{isConnected}}" bindtap="flashBlueTooth"> {{isConnectedStr}} </button>
     </view>
   </view>
@@ -29,9 +26,12 @@
     <view class="flex-item" style="width: 80px;">
       <text >剩余时间：</text>
     </view>
-    <view class="flex-item" style="width: 220px;">
+    <view class="flex-item" style="width: 160px;">
       <slider value="{{progress_L}}" min="0" max="35" bindchange="setProgress_L" data-property-name="duration" />
     </view>
+    <view class="flex-item" style="width: 60px;">
+        <text >{{progress_L}}分钟</text>
+      </view>
   </view>
 </view>
 
