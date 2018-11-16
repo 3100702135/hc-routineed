@@ -427,7 +427,7 @@ Page({
       case 'B': this.setData({ progress_B: strValue });   break;  //后部亮度
 
       case 'V': 
-      if (strValue==11)
+      if (strValue=='20')
       {
         this.setData({ voiceChecked: true }); break;  //打开声音
       }
@@ -489,8 +489,8 @@ Page({
     var that = this;
     that.voiceChecked = e.detail.value;
     if (that.voiceChecked == true) {
-      that.writeToBLE('V11' );
-      console.log('打开声音V11');
+      that.writeToBLE('V20' );
+      console.log('打开声音V20');
     }
     else
     {
