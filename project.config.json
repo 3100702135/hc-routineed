@@ -3,6 +3,11 @@
 	"pluginRoot": "plugin/",
 	"compileType": "miniprogram",
 	"setting": {
+		"directCommit": true,
+		"urlCheck": true,
+		"es6": true,
+		"postcss": true,
+		"minified": false,
 		"newFeature": true
 	},
 	"appid": "wxb12dd11fbbf2a473",

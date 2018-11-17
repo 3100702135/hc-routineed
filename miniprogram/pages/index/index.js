@@ -17,7 +17,8 @@ Page({
     count: 0, // 设置 计数器 初始为0
     countTimer: null, // 设置 定时器 初始为nul
     isChecked: false,
-    voiceChecked: true,
+    voiceCheckValue: 'V20',
+    voiceChecked : true,
     isShow: false, //是否第一次，隐藏连接成功
     isLoading: true,  //蓝牙是否连接
     isConnected: false,  //蓝牙是否连接  已连接不能刷新
@@ -429,10 +430,10 @@ Page({
       case 'V': 
       if (strValue=='20')
       {
-        this.setData({ voiceChecked: true }); break;  //打开声音
+        this.setData({ voiceChecked: true}); break;  //打开声音
       }
       else{
-        this.setData({ voiceChecked: flase }); break;  //关闭声音
+        this.setData({ voiceChecked: false }); break;  //关闭声音
       }
       default : this.onShow(); break;
     }
@@ -487,15 +488,19 @@ Page({
 
   checkboxChange: function (e) {
     var that = this;
-    that.voiceChecked = e.detail.value;
-    if (that.voiceChecked == true) {
-      that.writeToBLE('V20' );
+    var CheckValue='';
+    that.CheckValue = e.detail.value[0];
+    console.log('接受变化值');
+    console.log(that.CheckValue);
+    if (that.CheckValue == 'V20') 
+    {
       console.log('打开声音V20');
+      that.writeToBLE('V20' );
     }
     else
     {
-      that.writeToBLE('V10');
       console.log('关闭声音V10');
+      that.writeToBLE('V10');
     }
   },
 
