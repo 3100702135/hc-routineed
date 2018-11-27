@@ -1,11 +1,15 @@
 // miniprogram/pages/user.js
-Page({
+import { WXBizDataCrypt } from "../../commen/js/WXBizDataCrypt.js";
+const app = getApp();
 
+Page({
   /**
    * 页面的初始数据
    */
   data: {
-
+    appId: 'wxb12dd11fbbf2a473',
+    secret: '0f74bb40d557bb622b551789a94fcf58', //小程序秘钥
+    sessionKey : 'tiihtNczf5v6AKRyjwEUhQ=='
   },
 
   /**
@@ -56,6 +60,28 @@ Page({
   onReachBottom: function () {
 
   },
+  getPhoneNumber(e) {
+    console.log(e.detail.errMsg)
+    console.log(e.detail.iv)
+    console.log(e.detail.encryptedData)
+    if (e.detail.errMsg == 'getPhoneNumber:fail user deny') {
+      wx.showModal({
+        title: '提示',
+        showCancel: false,
+        content: '未授权',
+        success: function (res) { }
+      })
+    } else {
+      wx.showModal({
+        title: '提示',
+        showCancel: false,
+        content: '同意授权',
+        success: function (res) {
+          console.log('得到APPID' + app.globalData.appId);
+         }
+      })
+    }
+  } ,
 
   /**
    * 用户点击右上角分享

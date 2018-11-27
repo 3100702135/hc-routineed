@@ -444,7 +444,8 @@ Page({
     that.setProgressValue_L = e.detail.value;
     if (that.setProgressValue_L<10)
     {
-      that.setProgressValue_L = '0' + that.setProgressValue_L;
+      that.setProgressValue_L = '10';
+      this.setData({ progress_L: that.setProgressValue_L });
     }
     that.writeToBLE('L' + that.setProgressValue_L.toString());
     console.log('设置时间啦', 'L' + that.setProgressValue_L.toString());
