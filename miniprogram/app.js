@@ -1,6 +1,6 @@
 App({
   globalData: {
-    userInfo: null,
+    userInfo: {},
     js_code:'',
     appId: 'wxb12dd11fbbf2a473',
     model: null,
@@ -17,6 +17,7 @@ App({
         if (res.code) {
           //发起网络请求
           that.js_code = res.code;
+          that.globalData.userInfo = res.userInfo
           console.log('获取用户登录code！' + res.code)
         } else {
           console.log('获取用户登录态失败！' + res.errMsg)

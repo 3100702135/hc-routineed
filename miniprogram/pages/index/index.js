@@ -33,7 +33,33 @@ Page({
     characteristic_write: false,  //蓝牙设备特是否支持写
     characteristic_notify: false, //蓝牙设备特是否支持notify 操作
     characteristic_indicate: false, //蓝牙设备特是否支持indicate 操作
-
+    nullHouse: false,  //先设置显示
+  },
+  getPhoneNumber(e) {
+    var that = this;
+    console.log(e.detail.errMsg)
+    console.log(e.detail.iv)
+    console.log(e.detail.encryptedData)
+    if (e.detail.errMsg == 'getPhoneNumber:fail user deny') {
+      wx.showModal({
+        title: '提示',
+        showCancel: false,
+        content: '未授权',
+        success: function (res) { }
+      })
+    } else {
+      wx.showModal({
+        title: '提示',
+        showCancel: false,
+        content: '同意授权',
+        success: function (res) {
+          that.setData({
+            nullHouse: true, //弹窗隐藏
+          }) 
+          console.log('得到APPID' + app.globalData.appId);
+        }
+      })
+    }
   },
   flashBlueTooth() {
     wx.showLoading({
