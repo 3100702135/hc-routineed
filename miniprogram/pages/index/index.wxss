@@ -175,13 +175,20 @@ button {
 /*content*/ 
 .drawer_box { 
   width: 650rpx;
-  height:800rpx;
+  height:900rpx;
   overflow: hidden;  
   position: fixed;  
-  top: 50%;  
-  left: 0;  
+  top: 35%;  
+  left: 10rpx;
+  right: 10rpx;
   z-index: 1001;  
-  background: rgb(250, 250, 250);  
+  background-image :url('https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTI5QbBF920qWNcRaHrxSyc6pHibD5iajvtER1T83IbGMY0xicHPzjLPjRs1MFNStNTXnN4LCGG5Fo93g/132');
   margin: -150px 50rpx 0 50rpx;  
   border-radius: 3px;  
 } 
+
+.button_tel {
+  background-color: #008CBA;
+  border-radius: 30px;  
+  margin-top:300px;
+}

@@ -3,12 +3,12 @@
 	"pluginRoot": "plugin/",
 	"compileType": "miniprogram",
 	"setting": {
-		"directCommit": true,
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": true,
 		"postcss": true,
 		"minified": false,
-		"newFeature": true
+		"newFeature": true,
+		"directCommit": true
 	},
 	"appid": "wxb12dd11fbbf2a473",
 	"projectname": "hc-routined",

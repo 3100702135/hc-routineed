@@ -37,29 +37,45 @@ Page({
   },
   getPhoneNumber(e) {
     var that = this;
+    console.log('点击反馈')
     console.log(e.detail.errMsg)
     console.log(e.detail.iv)
     console.log(e.detail.encryptedData)
-    if (e.detail.errMsg == 'getPhoneNumber:fail user deny') {
+    if (e.detail.errMsg == 'getPhoneNumber:fail:cancel to confirm login') {
       wx.showModal({
         title: '提示',
         showCancel: false,
-        content: '未授权',
+        content: '请点击授权前往体验,我们不会获取您任何敏感信息！',
         success: function (res) { }
       })
     } else {
-      wx.showModal({
-        title: '提示',
-        showCancel: false,
-        content: '同意授权',
-        success: function (res) {
-          that.setData({
-            nullHouse: true, //弹窗隐藏
-          }) 
-          console.log('得到APPID' + app.globalData.appId);
-        }
-      })
+      that.httpGetPhoneNumber(e);
     }
+  },
+
+  httpGetPhoneNumber: function (e) {
+    var that = this;
+    console.log('点击反馈')
+    console.log(e.detail.errMsg)
+    console.log(e.detail.iv)
+    console.log(e.detail.encryptedData)
+    wx.request({
+      url: 'http://192.168.1.105:8080/ibccf/wechat/getPhoneNumber', //这里就写上后台解析手机号的接口
+      //这里的几个参数是获取授权后的加密数据，作为参数传递给后台就行了
+      data: {
+        encryptedData: e.detail.encryptedData,
+        code: app.globalData.js_code,
+        iv: e.detail.iv
+      },
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
+      },
+      success(res) {
+        that.setData({ nullHouse: true }); 
+        console.log('后台获取数据：',res.data)
+      }
+    })
   },
   flashBlueTooth() {
     wx.showLoading({
