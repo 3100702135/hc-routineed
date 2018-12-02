@@ -209,3 +209,23 @@
   height: 300rpx;
 }
 
+/*content*/ 
+.drawer_box { 
+  width: 100%;
+  height:100%;
+  overflow: hidden;  
+  position: fixed;  
+  z-index: 1001;  
+  background-image :url('https://mmbiz.qpic.cn/mmbiz_jpg/16qZYkGTouYqNVZjWVsl7gcymqhYgUWcvOJw7IHiaJ3Vqan9qlIYgpSCbsUQhY5Rf8bSPLEAcvEJQPA7g5A2GSA/0?wx_fmt=jpeg');
+  background-repeat:no-repeat; 
+  background-size:100% 100%;
+  -moz-background-size:100% 100%;
+  border-radius: 3px;  
+} 
+
+.button_tel {
+  background-color: #008CBA;
+  border-radius: 30px;  
+  margin-top:300px;
+}
+

@@ -1,5 +1,5 @@
-<view class="drawer_box" hidden="{{nullHouse}}">
-    <button open-type="getPhoneNumber" class='button_tel' bindgetphonenumber="getPhoneNumber">点我登录</button>
+  <view class="drawer_box" hidden="{{nullHouse}}">
+     <button open-type="getPhoneNumber" class='button_tel' bindgetphonenumber="getPhoneNumber">点击开始使用         </button>
   </view>
 
     <view class="section class='text'">

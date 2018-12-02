@@ -33,15 +33,14 @@ Page({
     characteristic_write: false,  //蓝牙设备特是否支持写
     characteristic_notify: false, //蓝牙设备特是否支持notify 操作
     characteristic_indicate: false, //蓝牙设备特是否支持indicate 操作
-    nullHouse: false,  //先设置显示
+    nullHouse: app.globalData.nullHouse  //获取手机界面是否显示
   },
   getPhoneNumber(e) {
     var that = this;
-    console.log('点击反馈')
     console.log(e.detail.errMsg)
     console.log(e.detail.iv)
     console.log(e.detail.encryptedData)
-    if (e.detail.errMsg == 'getPhoneNumber:fail:cancel to confirm login') {
+    if (e.detail.errMsg != 'getPhoneNumber:ok') {
       wx.showModal({
         title: '提示',
         showCancel: false,
@@ -49,34 +48,62 @@ Page({
         success: function (res) { }
       })
     } else {
-      that.httpGetPhoneNumber(e);
+      that.httpGetPhoneNumber(e.detail.encryptedData, e.detail.iv);
     }
   },
 
-  httpGetPhoneNumber: function (e) {
+  //获取登录用户手机号
+  httpGetPhoneNumber: function (encryptedData, iv) {
     var that = this;
-    console.log('点击反馈')
-    console.log(e.detail.errMsg)
-    console.log(e.detail.iv)
-    console.log(e.detail.encryptedData)
+    console.log('准备获取number')
+    console.log(encryptedData)
+    console.log(iv)
+    console.log('原来的'+app.globalData.js_code)
+    wx.checkSession({
+      success: function () {
+        //session_key 未过期，并且在本生命周期一直有效
+        console.log('session_key 未过期，并且在本生命周期一直有效'+app.globalData.js_code)
+      },
+      fail: function () {
+        // session_key 已经失效，需要重新执行登录流程
+        wx.login({
+          success: function (res) {
+            if (res.code) {
+              //发起网络请求
+              app.globalData.js_code = res.code;
+              console.log('再次获取用户登录code！' + res.code)
+              console.log('app.js执行 用户信息' + res.userInfo)
+            } else {
+              console.log('获取用户登录态失败！' + res.errMsg)
+            }
+          }
+        });
+      }
+    })
     wx.request({
-      url: 'http://192.168.1.105:8080/ibccf/wechat/getPhoneNumber', //这里就写上后台解析手机号的接口
+      url: app.globalData.wechatUrl + 'getPhoneNumber', //这里就写上后台解析手机号的接口
       //这里的几个参数是获取授权后的加密数据，作为参数传递给后台就行了
       data: {
-        encryptedData: e.detail.encryptedData,
+        encryptedData: encryptedData,
         code: app.globalData.js_code,
-        iv: e.detail.iv
+        iv: iv
       },
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded' // 默认值
       },
       success(res) {
-        that.setData({ nullHouse: true }); 
-        console.log('后台获取数据：',res.data)
+        app.globalData.nullHouse = res.data
+        if (res.data == true) {
+          that.setData({ nullHouse: true });
+          that.startConnect();
+        }
+        that.setData({ nullHouse: app.globalData.nullHouse });
+        console.log('后台获取数据httpGetPhoneNumber：', res.data)
       }
     })
   },
+
   flashBlueTooth() {
     wx.showLoading({
       title: '请稍后...'
@@ -86,6 +113,9 @@ Page({
     }, 2000)
   },
   onLoad: function (options) {
+    this.setData({ nullHouse: app.globalData.nullHouse });
+    console.log('kaishi ：' + this.data.isShow)
+    this.startConnect();
     //加载判断微信版本是否兼容
     if (app.getPlatform() == 'android' && this.versionCompare('6.5.7', app.getVersion())) {
       wx.showModal({
@@ -101,8 +131,6 @@ Page({
         showCancel: false
       })
     }
-    // 页面初始化 options为页面跳转所带来的参数 
-    this.startConnect();
   },
 
   startConnect: function () {
@@ -110,9 +138,6 @@ Page({
     wx.showLoading({
       title: '开启蓝牙适配'
     });
-    // setTimeout(function () {
-    //   wx.hideToast()
-    // }, 2000)
     wx.openBluetoothAdapter({
       success: function (res) {
         console.log("初始化蓝牙适配器");
@@ -552,6 +577,8 @@ Page({
   },
   onShow: function () {
     // 页面显示 
+    var that = this;
+
   },
   onHide: function () {
     // 页面隐藏 

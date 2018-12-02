@@ -172,18 +172,18 @@ button {
   opacity: 0.85;
 }
 
+
 /*content*/ 
 .drawer_box { 
-  width: 650rpx;
-  height:900rpx;
+  width: 100%;
+  height:100%;
   overflow: hidden;  
   position: fixed;  
-  top: 35%;  
-  left: 10rpx;
-  right: 10rpx;
   z-index: 1001;  
-  background-image :url('https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTI5QbBF920qWNcRaHrxSyc6pHibD5iajvtER1T83IbGMY0xicHPzjLPjRs1MFNStNTXnN4LCGG5Fo93g/132');
-  margin: -150px 50rpx 0 50rpx;  
+  background-image :url('https://mmbiz.qpic.cn/mmbiz_jpg/16qZYkGTouYqNVZjWVsl7gcymqhYgUWcCegk2TQeERu03KWG6fPWdN9EPcfV6KxMPPAjTYiaAFM1e1MBWAbLEdQ/0?wx_fmt=jpeg');
+  background-repeat:no-repeat; 
+  background-size:100% 100%;
+  -moz-background-size:100% 100%;
   border-radius: 3px;  
 } 
 

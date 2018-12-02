@@ -1,44 +1,20 @@
 App({
   globalData: {
-    userInfo: {},
+    userInfo: null,
     js_code:'',
     appId: 'wxb12dd11fbbf2a473',
+    wechatUrl:'http://192.168.1.105:8080/ibccf/wechat/',
     model: null,
     version : null,
     system: null,
     platform: null,
+    isHidden: true,  // true:已登录  false:未登录
+    nullHouse: false,  //获取手机界面是否显示
     SDKVersion: null
   },
   onLaunch: function () {
     var that = this;
     that.globalData.sysinfo = wx.getSystemInfoSync()
-    wx.login({
-      success: function (res) {
-        if (res.code) {
-          //发起网络请求
-          that.globalData.js_code = res.code;
-          that.globalData.userInfo = res.userInfo
-          console.log('获取用户登录code！' + res.code)
-          console.log('app.js执行 用户信息' + res.userInfo)
-        } else {
-          console.log('获取用户登录态失败！' + res.errMsg)
-        }
-      }
-    });
-
-    // wx.getSetting({
-    //   success(res) {
-    //     if (!res.authSetting['scope.userInfo']) {
-    //       wx.authorize({
-    //         scope: 'scope.userInfo',
-    //         success() {
-    //           // 用户已经同意小程序使用录音功能，后续调用 wx.startRecord 接口不会弹窗询问
-    //            wx.startRecord()
-    //         }
-    //       })
-    //     }
-    //   }
-    // })
 
 
   },
