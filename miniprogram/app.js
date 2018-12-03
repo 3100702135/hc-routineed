@@ -3,7 +3,7 @@ App({
     userInfo: null,
     js_code:'',
     appId: 'wxb12dd11fbbf2a473',
-    wechatUrl:'http://192.168.1.105:8080/ibccf/wechat/',
+    wechatUrl:'http://localhost:8080/ibccf/wechat/',
     model: null,
     version : null,
     system: null,

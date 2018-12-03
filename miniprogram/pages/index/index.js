@@ -1,3 +1,5 @@
+import { $wuxCountDown } from '../../wux/index'
+
 const app = getApp()
 Page({
   data: {
@@ -14,7 +16,8 @@ Page({
     setProgressValue_M: '',
     setProgressValue_B: '',
 
-    count: 0, // 设置 计数器 初始为0
+    count: '20 分 00 秒',
+    volumeType: "ios-volume-high",
     countTimer: null, // 设置 定时器 初始为nul
     isChecked: false,
     voiceCheckValue: 'V20',
@@ -104,6 +107,20 @@ Page({
     })
   },
 
+  voiceChecked: function () {
+    var that = this;
+    console.log(this);
+    that.setData({
+      voiceCheckValue: !that.data.voiceCheckValue,
+      volumeType: that.data.voiceCheckValue ? "ios-volume-off" : "ios-volume-high"
+    });
+    wx.showToast({
+      title: that.data.voiceCheckValue ? '声音打开' : "声音关闭",
+      icon: 'success',
+      duration: 1500
+    })
+  },
+
   flashBlueTooth() {
     wx.showLoading({
       title: '请稍后...'
@@ -111,6 +128,20 @@ Page({
     setTimeout(function () {
       wx.hideToast()
     }, 2000)
+
+    // 蓝牙连接成功后开始倒计时
+    this.c3 = new $wuxCountDown({
+      date: +(new Date) + 60000 * 20,
+      render(date) {
+        const min = this.leadingZeros(date.min, 2) + ' 分 '
+        const sec = this.leadingZeros(date.sec, 2) + ' 秒 '
+
+        this.setData({
+          count: min + sec,
+        })
+      },
+    })
+
   },
   onLoad: function (options) {
     this.setData({ nullHouse: app.globalData.nullHouse });

@@ -1,1 +1,7 @@
-{}
+{
+  "usingComponents": {
+    "wux-circle": "../../wux/circle/index",
+    "wux-icon": "../../wux/icon/index",
+    "wux-switch": "../../wux/switch/index"
+  }
+}

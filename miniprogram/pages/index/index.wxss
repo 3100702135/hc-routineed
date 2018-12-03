@@ -192,3 +192,10 @@ button {
   border-radius: 30px;  
   margin-top:300px;
 }
+.countDown {
+	font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+    font-size: 2em;
+    color: #04BE02;
+    margin: 10px 0;
+    text-align: center;
+}
